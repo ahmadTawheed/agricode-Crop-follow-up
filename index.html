@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGRICODE - حلول زراعية ذكية</title>
+    <!-- icon-logo -->
+    <link rel="icon" href="#">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Notyf Notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1a5d1a;
+            --primary-light: #2d7a2d;
+            --primary-dark: #0f3d0f;
+            --secondary-color: #4ade80;
+            --accent-color: #22c55e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        body[dir="ltr"] {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Gradient Backgrounds */
+        .gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Progress Bar */
+        .progress-step {
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .progress-step.completed {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        /* Form Section */
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Card Hover Effects */
+        .feature-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 93, 26, 0.3);
+        }
+        
+        /* Language Toggle */
+        .lang-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+        
+        body[dir="rtl"] .whatsapp-float {
+            left: 20px;
+            right: auto;
+        }
+        
+        /* Loading Animation */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="gradient-primary shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <button onclick="goBack()" class="text-white hover:text-gray-200 transition-colors">
+                        <i class="fas fa-arrow-right text-xl"></i>
+                    </button>
+                    <h1 class="text-white text-2xl font-bold">AGRICODE</h1>
+                </div>
+                <button onclick="toggleLanguage()" class="lang-toggle bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30">
+                    <span class="lang-ar">EN</span>
+                    <span class="lang-en hidden">AR</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20 bg-gradient-to-br from-green-50 to-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+                <span class="lang-ar">AGRICODE - حلول زراعية ذكية</span>
+                <span class="lang-en hidden">AGRICODE - Smart Agricultural Solutions</span>
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+                <span class="lang-ar">نقدم حلولاً مبتكرة للزراعة الحديثة باستخدام التكنولوجيا المتقدمة لتحسين الإنتاجية والاستدامة</span>
+                <span class="lang-en hidden">We provide innovative solutions for modern agriculture using advanced technology to improve productivity and sustainability</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Features & Benefits Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text" data-aos="fade-up">
+                <span class="lang-ar">مميزات وفوائد الخدمة للمزارع</span>
+                <span class="lang-en hidden">Features and Benefits for Farmers</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">زيادة الإنتاجية</span>
+                        <span class="lang-en hidden">Increased Productivity</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">تحسين جودة وكمية المحاصيل من خلال التكنولوجيا المتقدمة والاستشارات الخبيرة</span>
+                        <span class="lang-en hidden">Improve crop quality and quantity through advanced technology and expert consultations</span>
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">توفير الوقت والجهد</span>
+                        <span class="lang-en hidden">Time and Effort Saving</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">أتمتة العمليات الزراعية وتقليل الجهد اليدوي مع الحفاظ على الجودة</span>
+                        <span class="lang-en hidden">Automate farming operations and reduce manual labor while maintaining quality</span>
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">استشارات فورية</span>
+                        <span class="lang-en hidden">Instant Consultations</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">الحصول على استشارات فورية من خبراء الزراعة في أي وقت ومكان</span>
+                        <span class="lang-en hidden">Get instant consultations from agricultural experts anytime, anywhere</span>
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">حلول مخصصة</span>
+                        <span class="lang-en hidden">Customized Solutions</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">تقديم حلول مصممة خصيصاً لتناسب احتياجات كل مزرعة ومحصول</span>
+                        <span class="lang-en hidden">Provide solutions specifically designed to suit each farm and crop's needs</span>
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="500">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">تتبع دقيق للمحصول</span>
+                        <span class="lang-en hidden">Precise Crop Tracking</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">مراقبة دقيقة لمراحل نمو المحصول وتحديد المشاكل في وقت مبكر</span>
+                        <span class="lang-en hidden">Precise monitoring of crop growth stages and early problem detection</span>
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8 border border-green-100" data-aos="fade-up" data-aos-delay="600">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-ar">دعم فني متواصل</span>
+                        <span class="lang-en hidden">Continuous Technical Support</span>
+                    </h3>
+                    <p class="text-gray-600">
+                        <span class="lang-ar">دعم فني على مدار الساعة لمساعدتك في حل أي مشاكل تواجهها</span>
+                        <span class="lang-en hidden">24/7 technical support to help you solve any problems you face</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Request Form -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text" data-aos="fade-up">
+                <span class="lang-ar">طلب الخدمة</span>
+                <span class="lang-en hidden">Service Request</span>
+            </h2>
+
+            <!-- Progress Bar -->
+            <div class="mb-12" data-aos="fade-up">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="progress-step active rounded-full w-12 h-12 flex items-center justify-center border-2 border-green-600 font-bold" data-step="1">1</div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                    <div class="progress-step rounded-full w-12 h-12 flex items-center justify-center border-2 border-gray-300 font-bold" data-step="2">2</div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                    <div class="progress-step rounded-full w-12 h-12 flex items-center justify-center border-2 border-gray-300 font-bold" data-step="3">3</div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                    <div class="progress-step rounded-full w-12 h-12 flex items-center justify-center border-2 border-gray-300 font-bold" data-step="4">4</div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                    <div class="progress-step rounded-full w-12 h-12 flex items-center justify-center border-2 border-gray-300 font-bold" data-step="5">5</div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span class="lang-ar">معلومات المزارع</span>
+                    <span class="lang-en hidden">Farmer Info</span>
+                    <span class="lang-ar">المزرعة</span>
+                    <span class="lang-en hidden">Farm</span>
+                    <span class="lang-ar">الحالة</span>
+                    <span class="lang-en hidden">Status</span>
+                    <span class="lang-ar">الاحتياجات</span>
+                    <span class="lang-en hidden">Needs</span>
+                    <span class="lang-ar">ملاحظات</span>
+                    <span class="lang-en hidden">Notes</span>
+                </div>
+            </div>
+
+            <form id="serviceForm" class="bg-white rounded-xl shadow-lg p-8">
+                <!-- Section 1: Farmer Information -->
+                <div class="form-section active" data-section="1">
+                    <h3 class="text-2xl font-bold mb-6 text-green-700">
+                        <span class="lang-ar">معلومات المزارع</span>
+                        <span class="lang-en hidden">Farmer Information</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">الاسم الكامل *</span>
+                                <span class="lang-en hidden">Full Name *</span>
+                            </label>
+                            <input type="text" name="fullName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="أحمد محمد" data-placeholder-ar="أحمد محمد" data-placeholder-en="Ahmed Mohamed">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">رقم الهاتف (واتساب) *</span>
+                                <span class="lang-en hidden">Phone Number (WhatsApp) *</span>
+                            </label>
+                            <input type="tel" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="01xxxxxxxxx" data-placeholder-ar="01xxxxxxxxx" data-placeholder-en="01xxxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">البريد الإلكتروني</span>
+                                <span class="lang-en hidden">Email</span>
+                            </label>
+                            <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="example@email.com" data-placeholder-ar="example@email.com" data-placeholder-en="example@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">الدولة *</span>
+                                <span class="lang-en hidden">Country *</span>
+                            </label>
+                            <input type="text" name="country" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="مصر" data-placeholder-ar="مصر" data-placeholder-en="Egypt">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">المحافظة *</span>
+                                <span class="lang-en hidden">Governorate *</span>
+                            </label>
+                            <input type="text" name="governorate" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="القاهرة" data-placeholder-ar="القاهرة" data-placeholder-en="Cairo">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">المدينة *</span>
+                                <span class="lang-en hidden">City *</span>
+                            </label>
+                            <input type="text" name="city" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="نصر" data-placeholder-ar="نصر" data-placeholder-en="Nasr">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">القرية (إن وجدت)</span>
+                                <span class="lang-en hidden">Village (if any)</span>
+                            </label>
+                            <input type="text" name="village" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="اسم القرية" data-placeholder-ar="اسم القرية" data-placeholder-en="Village name">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Farm Information -->
+                <div class="form-section" data-section="2">
+                    <h3 class="text-2xl font-bold mb-6 text-green-700">
+                        <span class="lang-ar">معلومات المزرعة والمحصول</span>
+                        <span class="lang-en hidden">Farm and Crop Information</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">اسم المحصول أو المحاصيل المراد متابعته *</span>
+                                <span class="lang-en hidden">Crop name(s) to be monitored *</span>
+                            </label>
+                            <textarea name="cropName" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="قم بإدخال أسماء المحاصيل" data-placeholder-ar="قم بإدخال أسماء المحاصيل" data-placeholder-en="Enter crop names"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">نوع التربة *</span>
+                                <span class="lang-en hidden">Soil Type *</span>
+                            </label>
+                            <input type="text" name="soilType" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="طينية" data-placeholder-ar="طينية" data-placeholder-en="Clay">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">مصدر المياه *</span>
+                                <span class="lang-en hidden">Water Source *</span>
+                            </label>
+                            <input type="text" name="waterSource" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="الري بالتنقيط" data-placeholder-ar="الري بالتنقيط" data-placeholder-en="Drip irrigation">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">نوع الزراعة *</span>
+                                <span class="lang-en hidden">Farming Type *</span>
+                            </label>
+                            <input type="text" name="farmingType" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="عضوية" data-placeholder-ar="عضوية" data-placeholder-en="Organic">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">المساحة الكلية بالفدان *</span>
+                                <span class="lang-en hidden">Total Area in Feddan *</span>
+                            </label>
+                            <input type="number" name="area" required min="0" step="0.1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="5" data-placeholder-ar="5" data-placeholder-en="5">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">تاريخ الزراعة التقريبي *</span>
+                                <span class="lang-en hidden">Approximate Planting Date *</span>
+                            </label>
+                            <input type="date" name="plantingDate" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">مكان المزرعة *</span>
+                                <span class="lang-en hidden">Farm Location *</span>
+                            </label>
+                            <textarea name="farmLocation" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="اكتب العنوان بالتفصيل" data-placeholder-ar="اكتب العنوان بالتفصيل" data-placeholder-en="Write the address in detail"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Current Status -->
+                <div class="form-section" data-section="3">
+                    <h3 class="text-2xl font-bold mb-6 text-green-700">
+                        <span class="lang-ar">الحالة الحالية للمحصول</span>
+                        <span class="lang-en hidden">Current Crop Status</span>
+                    </h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">مرحلة نمو المحصول الحالية *</span>
+                                <span class="lang-en hidden">Current Growth Stage *</span>
+                            </label>
+                            <input type="text" name="growthStage" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="مرحلة الإزهار" data-placeholder-ar="مرحلة الإزهار" data-placeholder-en="Flowering stage">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">هل هناك أي مشاكل أو تحديات تواجهها حالياً؟ *</span>
+                                <span class="lang-en hidden">Are there any current problems or challenges? *</span>
+                            </label>
+                            <textarea name="problems" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="صف المشكلة بالتفصيل" data-placeholder-ar="صف المشكلة بالتفصيل" data-placeholder-en="Describe the problem in detail"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Needs and Expectations -->
+                <div class="form-section" data-section="4">
+                    <h3 class="text-2xl font-bold mb-6 text-green-700">
+                        <span class="lang-ar">احتياجاتك وتوقعاتك</span>
+                        <span class="lang-en hidden">Your Needs and Expectations</span>
+                    </h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">ما هو هدفك الرئيسي من طلب المتابعة؟ *</span>
+                                <span class="lang-en hidden">What is your main goal for requesting monitoring? *</span>
+                            </label>
+                            <textarea name="mainGoal" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="اكتب هدفك الرئيسي" data-placeholder-ar="اكتب هدفك الرئيسي" data-placeholder-en="Write your main goal"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">كيف تفضل أن يتم التواصل معك؟ *</span>
+                                <span class="lang-en hidden">How do you prefer to be contacted? *</span>
+                            </label>
+                            <input type="text" name="communication" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="واتساب" data-placeholder-ar="واتساب" data-placeholder-en="WhatsApp">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Additional Notes -->
+                <div class="form-section" data-section="5">
+                    <h3 class="text-2xl font-bold mb-6 text-green-700">
+                        <span class="lang-ar">ملاحظات إضافية</span>
+                        <span class="lang-en hidden">Additional Notes</span>
+                    </h3>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">هل هناك أي مشاكل حالية في المحصول تريد ذكرها؟</span>
+                                <span class="lang-en hidden">Are there any current crop issues you want to mention?</span>
+                            </label>
+                            <textarea name="additionalProblems" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="اكتب المشاكل الإضافية" data-placeholder-ar="اكتب المشاكل الإضافية" data-placeholder-en="Write additional problems"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">
+                                <span class="lang-ar">هل لديك أي طلبات خاصة أو توقعات محددة من فريقنا؟</span>
+                                <span class="lang-en hidden">Do you have any special requests or specific expectations from our team?</span>
+                            </label>
+                            <textarea name="specialRequests" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition-colors" placeholder="اكتب طلباتك الخاصة" data-placeholder-ar="اكتب طلباتك الخاصة" data-placeholder-en="Write your special requests"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8">
+                    <button type="button" id="prevBtn" onclick="changeSection(-1)" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors hidden">
+                        <span class="lang-ar">السابق</span>
+                        <span class="lang-en hidden">Previous</span>
+                    </button>
+                    <button type="button" id="nextBtn" onclick="changeSection(1)" class="btn-primary text-white px-6 py-3 rounded-lg ml-auto">
+                        <span class="lang-ar">التالي</span>
+                        <span class="lang-en hidden">Next</span>
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn-primary text-white px-6 py-3 rounded-lg hidden">
+                        <span class="lang-ar">إرسال الطلب</span>
+                        <span class="lang-en hidden">Submit Request</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- WhatsApp Float Button -->
+    <div class="whatsapp-float" onclick="openWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+    </div>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Initialize Notyf
+        const notyf = new Notyf({
+            duration: 4000,
+            position: {
+                x: 'right',
+                y: 'top'
+            },
+            types: [
+                {
+                    type: 'success',
+                    background: '#22c55e',
+                    icon: {
+                        className: 'fas fa-check-circle',
+                        tagName: 'i',
+                        color: 'white'
+                    }
+                },
+                {
+                    type: 'error',
+                    background: '#ef4444',
+                    icon: {
+                        className: 'fas fa-times-circle',
+                        tagName: 'i',
+                        color: 'white'
+                    }
+                }
+            ]
+        });
+
+        // Language Toggle
+        let currentLang = 'ar';
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Toggle language visibility
+            document.querySelectorAll('.lang-ar').forEach(el => {
+                el.classList.toggle('hidden', currentLang !== 'ar');
+            });
+            document.querySelectorAll('.lang-en').forEach(el => {
+                el.classList.toggle('hidden', currentLang !== 'en');
+            });
+            
+            // Update placeholders
+            updatePlaceholders();
+            
+            // Update AOS direction
+            AOS.refresh();
+        }
+
+        // Update placeholders based on language
+        function updatePlaceholders() {
+            document.querySelectorAll('input, textarea').forEach(field => {
+                const arPlaceholder = field.getAttribute('data-placeholder-ar');
+                const enPlaceholder = field.getAttribute('data-placeholder-en');
+                if (arPlaceholder && enPlaceholder) {
+                    field.placeholder = currentLang === 'ar' ? arPlaceholder : enPlaceholder;
+                }
+            });
+        }
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+
+        // Form navigation
+        let currentSection = 1;
+        const totalSections = 5;
+
+        function changeSection(direction) {
+            const newSection = currentSection + direction;
+            
+            if (newSection < 1 || newSection > totalSections) return;
+            
+            // Validate current section before moving forward
+            if (direction > 0 && !validateSection(currentSection)) {
+                notyf.error(currentLang === 'ar' ? 'يرجى ملء جميع الحقول الإلزامية' : 'Please fill all required fields');
+                return;
+            }
+            
+            // Hide current section
+            document.querySelector(`.form-section[data-section="${currentSection}"]`).classList.remove('active');
+            
+            // Update progress bar
+            document.querySelector(`.progress-step[data-step="${currentSection}"]`).classList.add('completed');
+            
+            // Update current section
+            currentSection = newSection;
+            
+            // Show new section
+            document.querySelector(`.form-section[data-section="${currentSection}"]`).classList.add('active');
+            
+            // Update progress bar
+            document.querySelector(`.progress-step[data-step="${currentSection}"]`).classList.add('active');
+            
+            // Update buttons
+            updateButtons();
+            
+            // Scroll to top of form
+            document.getElementById('serviceForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Show/hide previous button
+            prevBtn.classList.toggle('hidden', currentSection === 1);
+            
+            // Show/hide next and submit buttons
+            nextBtn.classList.toggle('hidden', currentSection === totalSections);
+            submitBtn.classList.toggle('hidden', currentSection !== totalSections);
+        }
+
+        function validateSection(section) {
+            const currentSectionEl = document.querySelector(`.form-section[data-section="${section}"]`);
+            const requiredFields = currentSectionEl.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Form submission
+        document.getElementById('serviceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateSection(currentSection)) {
+                notyf.error(currentLang === 'ar' ? 'يرجى ملء جميع الحقول الإلزامية' : 'Please fill all required fields');
+                return;
+            }
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Format WhatsApp message
+            const message = formatWhatsAppMessage(data);
+            
+            // Send to WhatsApp
+            sendToWhatsApp(message);
+        });
+
+        function formatWhatsAppMessage(data) {
+            const labels = {
+                ar: {
+                    fullName: '*الاسم الكامل*',
+                    phone: '*رقم الهاتف*',
+                    email: '*البريد الإلكتروني*',
+                    country: '*الدولة*',
+                    governorate: '*المحافظة*',
+                    city: '*المدينة*',
+                    village: '*القرية*',
+                    cropName: '*اسم المحصول*',
+                    soilType: '*نوع التربة*',
+                    waterSource: '*مصدر المياه*',
+                    farmingType: '*نوع الزراعة*',
+                    area: '*المساحة بالفدان*',
+                    plantingDate: '*تاريخ الزراعة*',
+                    farmLocation: '*مكان المزرعة*',
+                    growthStage: '*مرحلة النمو*',
+                    problems: '*المشاكل الحالية*',
+                    mainGoal: '*الهدف الرئيسي*',
+                    communication: '*طريقة التواصل*',
+                    additionalProblems: '*مشاكل إضافية*',
+                    specialRequests: '*طلبات خاصة*'
+                },
+                en: {
+                    fullName: '*Full Name*',
+                    phone: '*Phone Number*',
+                    email: '*Email*',
+                    country: '*Country*',
+                    governorate: '*Governorate*',
+                    city: '*City*',
+                    village: '*Village*',
+                    cropName: '*Crop Name*',
+                    soilType: '*Soil Type*',
+                    waterSource: '*Water Source*',
+                    farmingType: '*Farming Type*',
+                    area: '*Area in Feddan*',
+                    plantingDate: '*Planting Date*',
+                    farmLocation: '*Farm Location*',
+                    growthStage: '*Growth Stage*',
+                    problems: '*Current Problems*',
+                    mainGoal: '*Main Goal*',
+                    communication: '*Communication Method*',
+                    additionalProblems: '*Additional Problems*',
+                    specialRequests: '*Special Requests*'
+                }
+            };
+            
+            let message = currentLang === 'ar' ? '*طلب خدمة جديد من AGRICODE*\n\n' : '*New Service Request from AGRICODE*\n\n';
+            
+            // Add all fields
+            Object.keys(labels[currentLang]).forEach(key => {
+                if (data[key]) {
+                    message += `${labels[currentLang][key]}\n${data[key]}\n\n`;
+                }
+            });
+            
+            return encodeURIComponent(message);
+        }
+
+        function sendToWhatsApp(message) {
+            const phoneNumber = '201501021670'; // Remove the 0 and add country code
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            
+            // Show loading
+            notyf.open({
+                type: 'success',
+                message: currentLang === 'ar' ? 'جاري إرسال الطلب...' : 'Sending request...'
+            });
+            
+            // Open WhatsApp
+            setTimeout(() => {
+                window.open(url, '_blank');
+                notyf.success(currentLang === 'ar' ? 'تم إرسال الطلب بنجاح!' : 'Request sent successfully!');
+                
+                // Reset form
+                document.getElementById('serviceForm').reset();
+                currentSection = 1;
+                updateFormSections();
+            }, 1000);
+        }
+
+        function updateFormSections() {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Reset progress bar
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            
+            // Show first section
+            document.querySelector('.form-section[data-section="1"]').classList.add('active');
+            document.querySelector('.progress-step[data-step="1"]').classList.add('active');
+            
+            // Update buttons
+            updateButtons();
+        }
+
+        function openWhatsApp() {
+            const phoneNumber = '201501021670';
+            const url = `https://wa.me/${phoneNumber}`;
+            window.open(url, '_blank');
+        }
+
+        // Initialize placeholders
+        updatePlaceholders();
+    </script>
+</body>
+</html>
